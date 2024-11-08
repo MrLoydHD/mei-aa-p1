@@ -7,7 +7,15 @@ class ExhaustiveSearch(SearchAlgorithm):
 
     def __init__(self, graph: nx.Graph):
         super().__init__(graph)
+        # Preprocess the graph to remove isolated vertices
+        # self.graph = self.remove_isolated_vertices(graph)
 
+    # def remove_isolated_vertices(self, graph):
+    #     """Remove isolated vertices from the graph to optimize search."""
+    #     isolated_nodes = [node for node, degree in graph.degree() if degree == 0]
+    #     graph.remove_nodes_from(isolated_nodes)
+    #     return graph
+    
     def perform_search(self) -> tuple[Clique | None, int, int]:
         performed_operations = 0
         tested_solutions = 0

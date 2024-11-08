@@ -8,16 +8,25 @@ from algorithms.exhaustiveSearch import ExhaustiveSearch
 from algorithms.greedySearch import GreedySearch
 from graph.generateGraph import generate_graph
 from graph.saveGraphExample import save_graph_example
-from utils.plots import plot_vertices_vs_search_time, plot_edge_prob_vs_search_time, plot_vertices_vs_tested_solutions, plot_vertices_vs_operations_count, plot_edge_prob_vs_max_clique_weight, plot_vertices_vs_max_clique_weight
+from utils.plots import plot_vertices_vs_search_time_greedy, plot_edge_prob_vs_search_time, plot_vertices_vs_tested_solutions, plot_vertices_vs_operations_count_greedy, plot_edge_prob_vs_max_clique_weight, plot_vertices_vs_max_clique_weight, plot_vertices_vs_search_time_exhaustive, plot_vertices_vs_operations_count_exhaustive, plot_vertices_vs_operations_count_075, plot_vertices_vs_search_time_075
+from utils.utils import compare_greedy_backtracking_accuracy
 
 
 def main(output_mode=False):
     
     #ask user for the algorithm to be used
-    algorithm_name = input("Enter the algorithm to be used (Exhaustive, Greedy, Backtracking): ")
+    algorithm_name = input("Enter the algorithm number to be used: \n1. Exhaustive\n2. Greedy\n3. Backtracking\n")
+    while algorithm_name not in ["1", "2", "3"]:
+        algorithm_name = input("Invalid input. Please enter a valid algorithm number: \n1. Exhaustive\n2. Greedy\n3. Backtracking\n")
+    if algorithm_name == "1":
+        algorithm_name = "Exhaustive"
+    elif algorithm_name == "2":
+        algorithm_name = "Greedy"
+    elif algorithm_name == "3":
+        algorithm_name = "Backtracking"
 
-    graphs = generate_all_graphs(31)
-    run_simulation(graphs, output_mode, algorithm_name)
+    # graphs = generate_all_graphs(501)
+    # run_simulation(graphs, output_mode, algorithm_name)
     
     # Load the CSV data for plotting
     csv_filename = f"results/{algorithm_name}_results.csv"
@@ -27,13 +36,21 @@ def main(output_mode=False):
     plot_output_dir = f"results/plots/{algorithm_name}"
     os.makedirs(plot_output_dir, exist_ok=True)
 
+    if algorithm_name == "Greedy":
+        plot_vertices_vs_search_time_greedy(data, plot_output_dir)
+        plot_vertices_vs_operations_count_greedy(data, plot_output_dir)
+    elif algorithm_name == "Exhaustive":
+        plot_vertices_vs_search_time_exhaustive(data, plot_output_dir)
+        plot_vertices_vs_operations_count_exhaustive(data, plot_output_dir)
+        plot_vertices_vs_operations_count_075(data, plot_output_dir)
+        plot_vertices_vs_search_time_075(data, plot_output_dir)
+        
     # Call the plotting functions
-    plot_vertices_vs_search_time(data, plot_output_dir)
     plot_edge_prob_vs_search_time(data, plot_output_dir)
     plot_vertices_vs_tested_solutions(data, plot_output_dir)
-    plot_vertices_vs_operations_count(data, plot_output_dir)
     plot_edge_prob_vs_max_clique_weight(data, plot_output_dir)
     plot_vertices_vs_max_clique_weight(data, plot_output_dir)
+    compare_greedy_backtracking_accuracy("results/Greedy_results.csv", "results/Backtracking_results.csv", "results/comparison")
 
 def generate_all_graphs(max_vertices):
     if os.path.exists("graph/data/generated_graphs.pkl"):

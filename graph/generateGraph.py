@@ -12,8 +12,9 @@ def generate_graph(v, p):
 
     # Adicionar nós com pesos aleatórios
     for i in range(v):
-        x = np.random.randint(1, 21)
-        y = np.random.randint(1, 21)
+        #alterar para 1000 TODO
+        x = np.random.randint(1, 1001)
+        y = np.random.randint(1, 1001)
         weight = np.random.randint(1, 50)
         G.add_node(i, pos=(x, y), weight=weight)
 
