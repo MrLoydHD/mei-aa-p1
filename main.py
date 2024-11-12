@@ -25,8 +25,8 @@ def main(output_mode=False):
     elif algorithm_name == "3":
         algorithm_name = "Backtracking"
 
-    # graphs = generate_all_graphs(501)
-    # run_simulation(graphs, output_mode, algorithm_name)
+    graphs = generate_all_graphs(501)
+    run_simulation(graphs, output_mode, algorithm_name)
     
     # Load the CSV data for plotting
     csv_filename = f"results/{algorithm_name}_results.csv"
